@@ -1,2 +1,2 @@
 # Basic-Calculator
-A basic calculator in java
+A basic calculator in java using Swing
