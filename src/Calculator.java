@@ -33,7 +33,7 @@ class Calculator extends JFrame {
         curDisplay.setHorizontalAlignment(JLabel.RIGHT);
         this.add(curDisplay);
         
-        String[] symbols = {"C", "()", "%", "÷", "7", "8", "9", "x", "4", "5", "6", "-", "1", "2", "3", "+", "+/-", "0", ".", "="};
+        String[] symbols = {"C", "←", "%", "÷", "7", "8", "9", "x", "4", "5", "6", "-", "1", "2", "3", "+", "+/-", "0", ".", "="};
         JButton[] button = new JButton[20];
         for (int i = 0; i < 20; i++) {
             button[i] = new JButton(symbols[i]);
@@ -60,7 +60,7 @@ class Calculator extends JFrame {
                         case "8":
                         case "9":
                         case "0":
-                            if (displayStr.length() < 13) {
+                            if ((displayStr.length() < 13 && displayNum >= 0) || (displayStr.length() < 14 && displayNum < 0)) {
                                 displayNum *= 10;
                                 displayNum += Double.parseDouble(command);
                                 if (isFraction) {
@@ -71,6 +71,33 @@ class Calculator extends JFrame {
                                 }
                                 curDisplay.setText(displayStr);
                             }
+                            break;
+
+                        case "C":
+                            displayNum = 0;
+                            displayStr = "";
+                            curDisplay.setText(displayStr);
+                            break;
+
+                        case "←":
+                            // displayNum /= 10;
+                            break;
+
+                        case "%":
+                            break;
+
+                        case "+/-":
+                            displayNum = 0 - displayNum;
+                            if (isFraction) {
+                                displayStr = String.format("%.2f", displayNum);
+                            }
+                            else {
+                                displayStr = String.format("%.0f", displayNum);
+                            }
+                            curDisplay.setText(displayStr);
+                            break;
+
+                        case ".":
                             break;
                     
                         default:
