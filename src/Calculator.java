@@ -1,9 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 class Calculator extends JFrame {
     int buttonX = 0;
     int buttonY = 90;
+    double displayNum = 0;
+    String displayStr = "";
+    Boolean isFraction = false;
 
     public Calculator() {
         this.setTitle("Basic Calulator");
@@ -39,8 +43,41 @@ class Calculator extends JFrame {
             Font tempFont = button[i].getFont();
             Font buttonFont = tempFont.deriveFont(25f);
             button[i].setFont(buttonFont);
-
             this.add(button[i]);
+
+            button[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String command = e.getActionCommand();
+                    switch (command) {
+                        case "1":
+                        case "2":
+                        case "3":
+                        case "4":
+                        case "5":
+                        case "6":
+                        case "7":
+                        case "8":
+                        case "9":
+                        case "0":
+                            if (displayStr.length() < 13) {
+                                displayNum *= 10;
+                                displayNum += Double.parseDouble(command);
+                                if (isFraction) {
+                                    displayStr = String.format("%.2f", displayNum);
+                                }
+                                else {
+                                    displayStr = String.format("%.0f", displayNum);
+                                }
+                                curDisplay.setText(displayStr);
+                            }
+                            break;
+                    
+                        default:
+                            break;
+                    }
+                }
+            });
 
             if (buttonX < 200) {
                 buttonX += 96;
@@ -51,6 +88,8 @@ class Calculator extends JFrame {
             }
         }
         
+        this.revalidate();
+        this.repaint();
         this.setVisible(true);
     }
 
