@@ -3,25 +3,30 @@ import java.awt.*;
 
 class Calculator extends JFrame {
     int buttonX = 0;
-    int buttonY = 80;
+    int buttonY = 90;
 
     public Calculator() {
         this.setTitle("Basic Calulator");
-        this.setSize(400, 600);
+        this.setSize(400, 610);
         this.setResizable(false);
         this.getContentPane().setBackground(new Color(120, 128, 122));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
 
-        JLabel prevDisplay = new JLabel("12732.3434");
-        prevDisplay.setBounds(0, 0, 400, 30);
+        JLabel prevDisplay = new JLabel();
+        prevDisplay.setBounds(0, 0, 385, 30);
+        Font tempPrevDisplayFont = prevDisplay.getFont();
+        Font prevDisplayFont = tempPrevDisplayFont.deriveFont(18f);
+        prevDisplay.setFont(prevDisplayFont);
+        prevDisplay.setHorizontalAlignment(JLabel.RIGHT);
         this.add(prevDisplay);
         
-        JLabel curDisplay = new JLabel("12732.3434");
-        curDisplay.setBounds(0, 30, 400, 50);
+        JLabel curDisplay = new JLabel();
+        curDisplay.setBounds(0, 30, 385, 60);
         Font tempCurDisplayFont = curDisplay.getFont();
         Font curDisplayFont = tempCurDisplayFont.deriveFont(50f);
         curDisplay.setFont(curDisplayFont);
+        curDisplay.setHorizontalAlignment(JLabel.RIGHT);
         this.add(curDisplay);
         
         String[] symbols = {"C", "()", "%", "÷", "7", "8", "9", "x", "4", "5", "6", "-", "1", "2", "3", "+", "+/-", "0", ".", "="};
