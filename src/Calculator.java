@@ -67,14 +67,30 @@ class Calculator extends JFrame {
                             break;
 
                         case "←":
-                            switch (displayStr.charAt(displayStr.length() - 1)) {
-                                case '.':
-                                    
-                                    break;
-                            
-                                default:
-                                    break;
+                            if (!displayStr.equals("")) {
+                                switch (displayStr.charAt(displayStr.length() - 1)) {
+                                    case '.':
+                                        
+                                        break;
+                                
+                                    default:
+                                        if (isFraction) {
+                                            fractionPart = fractionPart.substring(0, fractionPart.length() - 1);
+                                        }
+                                        else {
+                                            wholePart = wholePart.substring(0, wholePart.length() - 1);
+                                        }
+    
+                                        displayStr = wholePart + fractionPart;
+                                        // curNum = Double.parseDouble(displayStr);
+                                        break;
+                                }
                             }
+
+                            curDisplay.setText(displayStr);
+                            System.out.println(wholePart);
+                            System.out.println(fractionPart);
+                            System.out.println("num = " + curNum);
                             break;
 
                         case "%":
