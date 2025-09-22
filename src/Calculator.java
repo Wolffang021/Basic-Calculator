@@ -80,7 +80,14 @@ class Calculator extends JFrame {
                             break;
 
                         case "←":
-                            // displayNum /= 10;
+                            switch (displayStr.charAt(displayStr.length() - 1)) {
+                                case '.':
+                                    
+                                    break;
+                            
+                                default:
+                                    break;
+                            }
                             break;
 
                         case "%":
