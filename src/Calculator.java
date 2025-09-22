@@ -81,23 +81,37 @@ class Calculator extends JFrame {
                             break;
 
                         case "+/-":
-                            // curNum = 0 - curNum;
-                            // displayStr = String.format("%.5f", curNum);
-                            // curDisplay.setText(displayStr);
+                            if (!displayStr.equals("")) {
+                                if (wholePart.equals("0") && !fractionPart.equals(".") && Double.parseDouble(fractionPart) > 0) {
+                                    wholePart = "-" + wholePart;
+                                }
+                                else {
+                                    wholePart = String.format("%.0f", 0 - Double.parseDouble(wholePart));
+                                }
+                                displayStr = wholePart + fractionPart;
+                                curNum = Double.parseDouble(displayStr);
+                                curDisplay.setText(displayStr);
+                                System.out.println(wholePart);
+                                System.out.println(fractionPart);
+                                System.out.println("num = " + curNum);
+                            }
                             break;
 
                         case ".":
                             if (!isFraction) {
                                 isFraction = true;
                                 if (displayStr.length() < maxLength) {
-                                    if (wholePart == "") {
+                                    if (wholePart.equals("")) {
                                         curNum = 0;
                                         wholePart = "0";
                                     }
-                                    wholePart += ".";
-                                    displayStr = wholePart;
+                                    fractionPart = ".";
+                                    displayStr = wholePart + fractionPart;
                                 }
                                 curDisplay.setText(displayStr);
+                                System.out.println(wholePart);
+                                System.out.println(fractionPart);
+                                System.out.println("num = " + curNum);
                             }
                             break;
 
@@ -120,13 +134,24 @@ class Calculator extends JFrame {
                             if (displayStr.length() < maxLength) {
                                 if (isFraction) {
                                     fractionPart += command;
+                                    displayStr = wholePart + fractionPart;
+                                    curNum = Double.parseDouble(displayStr);
                                 }
                                 else {
-                                    wholePart += command;
+                                    if (!(curNum == 0 && command.equals("0"))) {
+                                        wholePart += command;
+                                        displayStr = wholePart + fractionPart;
+                                        curNum = Double.parseDouble(displayStr);
+                                    }
+                                    else {
+                                        wholePart = "";
+                                    }
                                 }
                                 
-                                displayStr = wholePart + fractionPart;
                                 curDisplay.setText(displayStr);
+                                System.out.println(wholePart);
+                                System.out.println(fractionPart);
+                                System.out.println("num = " + curNum);
                             }
                             break;
                     }
