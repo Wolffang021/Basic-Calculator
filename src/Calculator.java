@@ -5,7 +5,10 @@ import java.awt.event.*;
 class Calculator extends JFrame {
     int buttonX = 0;
     int buttonY = 90;
-    double displayNum = 0;
+    double wholePart = 0;
+    double fractionPart = 0;
+    double curNum = 0;
+    double prevNum = 0;
     String displayStr = "";
     Boolean isFraction = false;
 
@@ -50,31 +53,11 @@ class Calculator extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     String command = e.getActionCommand();
                     switch (command) {
-                        case "1":
-                        case "2":
-                        case "3":
-                        case "4":
-                        case "5":
-                        case "6":
-                        case "7":
-                        case "8":
-                        case "9":
-                        case "0":
-                            if ((displayStr.length() < 13 && displayNum >= 0) || (displayStr.length() < 14 && displayNum < 0)) {
-                                displayNum *= 10;
-                                displayNum += Double.parseDouble(command);
-                                if (isFraction) {
-                                    displayStr = String.format("%.2f", displayNum);
-                                }
-                                else {
-                                    displayStr = String.format("%.0f", displayNum);
-                                }
-                                curDisplay.setText(displayStr);
-                            }
-                            break;
-
                         case "C":
-                            displayNum = 0;
+                            isFraction = false;
+                            wholePart = 0;
+                            fractionPart = 0;
+                            curNum = 0;
                             displayStr = "";
                             curDisplay.setText(displayStr);
                             break;
@@ -94,20 +77,65 @@ class Calculator extends JFrame {
                             break;
 
                         case "+/-":
-                            displayNum = 0 - displayNum;
-                            if (isFraction) {
-                                displayStr = String.format("%.2f", displayNum);
-                            }
-                            else {
-                                displayStr = String.format("%.0f", displayNum);
+                            // curNum = 0 - curNum;
+                            // displayStr = String.format("%.5f", curNum);
+                            // curDisplay.setText(displayStr);
+                            break;
+
+                        case ".":
+                            isFraction = true;
+                            if (displayStr.length() < 11) {
+                                if (wholePart == 0) {
+                                    curNum = 0;
+                                    displayStr = "0";
+                                }
+                                displayStr += ".";
                             }
                             curDisplay.setText(displayStr);
                             break;
 
-                        case ".":
+                        case "÷":
+                            break;
+
+                        case "x":
+                            break;
+
+                        case "-":
+                            break;
+
+                        case "+":
+                            break;
+
+                        case "=":
                             break;
                     
                         default:
+                            if ((displayStr.length() < 11 && curNum >= 0) || (displayStr.length() < 12 && curNum < 0 && !isFraction) || (displayStr.length() < 13 && curNum < 0 && isFraction)) {
+                                if (isFraction) {
+                                    fractionPart *= 10;
+                                    fractionPart += Double.parseDouble(command);
+                                    displayStr = Double.toString(wholePart) + String.format("%.0f", fractionPart);
+
+                                    // curNum += (double)fractionPart / Math.pow(10, String.format("%.0f", fractionPart).length());
+                                    // System.out.println(curNum + (double)fractionPart / Math.pow(10, String.format("%.0f", fractionPart).length()));
+                                    // System.out.println(Double.toString(fractionPart).length());
+                                    // displayStr = String.format("%." + Double.toString(fractionPart).length() + "f", curNum);
+                                }
+                                else {
+                                    wholePart *= 10;
+                                    wholePart += Double.parseDouble(command);
+                                    curNum = wholePart;
+                                    displayStr = String.format("%.0f", curNum);
+                                }
+                                
+                                // if ()
+                                curDisplay.setText(displayStr);
+
+                                // displayNum *= 10;
+                                // displayNum += Double.parseDouble(command);
+                                // displayStr = String.format("%.0f", displayNum);
+                                // curDisplay.setText(displayStr);
+                            }
                             break;
                     }
                 }
