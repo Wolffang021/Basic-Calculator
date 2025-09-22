@@ -5,10 +5,11 @@ import java.awt.event.*;
 class Calculator extends JFrame {
     int buttonX = 0;
     int buttonY = 90;
-    double wholePart = 0;
-    double fractionPart = 0;
+    int maxLength = 10;
     double curNum = 0;
     double prevNum = 0;
+    String wholePart = "";
+    String fractionPart = "";
     String displayStr = "";
     Boolean isFraction = false;
 
@@ -17,6 +18,9 @@ class Calculator extends JFrame {
         this.setSize(400, 610);
         this.setResizable(false);
         this.getContentPane().setBackground(new Color(120, 128, 122));
+        ImageIcon tempIcon = new ImageIcon("img/appIcon.png");
+        Image icon = tempIcon.getImage();
+        this.setIconImage(icon);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
 
@@ -55,8 +59,8 @@ class Calculator extends JFrame {
                     switch (command) {
                         case "C":
                             isFraction = false;
-                            wholePart = 0;
-                            fractionPart = 0;
+                            wholePart = "";
+                            fractionPart = "";
                             curNum = 0;
                             displayStr = "";
                             curDisplay.setText(displayStr);
@@ -83,15 +87,18 @@ class Calculator extends JFrame {
                             break;
 
                         case ".":
-                            isFraction = true;
-                            if (displayStr.length() < 11) {
-                                if (wholePart == 0) {
-                                    curNum = 0;
-                                    displayStr = "0";
+                            if (!isFraction) {
+                                isFraction = true;
+                                if (displayStr.length() < maxLength) {
+                                    if (wholePart == "") {
+                                        curNum = 0;
+                                        wholePart = "0";
+                                    }
+                                    wholePart += ".";
+                                    displayStr = wholePart;
                                 }
-                                displayStr += ".";
+                                curDisplay.setText(displayStr);
                             }
-                            curDisplay.setText(displayStr);
                             break;
 
                         case "÷":
@@ -110,33 +117,33 @@ class Calculator extends JFrame {
                             break;
                     
                         default:
-                            if ((displayStr.length() < 11 && curNum >= 0) || (displayStr.length() < 12 && curNum < 0 && !isFraction) || (displayStr.length() < 13 && curNum < 0 && isFraction)) {
+                            if (displayStr.length() < maxLength) {
                                 if (isFraction) {
-                                    fractionPart *= 10;
-                                    fractionPart += Double.parseDouble(command);
-                                    displayStr = Double.toString(wholePart) + String.format("%.0f", fractionPart);
-
-                                    // curNum += (double)fractionPart / Math.pow(10, String.format("%.0f", fractionPart).length());
-                                    // System.out.println(curNum + (double)fractionPart / Math.pow(10, String.format("%.0f", fractionPart).length()));
-                                    // System.out.println(Double.toString(fractionPart).length());
-                                    // displayStr = String.format("%." + Double.toString(fractionPart).length() + "f", curNum);
+                                    fractionPart += command;
                                 }
                                 else {
-                                    wholePart *= 10;
-                                    wholePart += Double.parseDouble(command);
-                                    curNum = wholePart;
-                                    displayStr = String.format("%.0f", curNum);
+                                    wholePart += command;
                                 }
                                 
-                                // if ()
+                                displayStr = wholePart + fractionPart;
                                 curDisplay.setText(displayStr);
-
-                                // displayNum *= 10;
-                                // displayNum += Double.parseDouble(command);
-                                // displayStr = String.format("%.0f", displayNum);
-                                // curDisplay.setText(displayStr);
                             }
                             break;
+                    }
+
+                    if (displayStr.indexOf('-') != -1) {
+                        if (displayStr.indexOf('.') != -1) {
+                            maxLength = 12;
+                        }
+                        else {
+                            maxLength = 11;
+                        }
+                    }
+                    else if (displayStr.indexOf('.') != -1) {
+                        maxLength = 11;
+                    }
+                    else {
+                        maxLength = 10;
                     }
                 }
             });
