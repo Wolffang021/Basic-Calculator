@@ -92,9 +92,9 @@ class Calculator extends JFrame {
                                 else if (displayStr.charAt(displayStr.length() - 1) == '.') {
                                     curNum = Double.parseDouble(wholePart);
                                 }
-                                // else if (displayStr.charAt(displayStr.length() - 1) == '.') {
-                                //     curNum = Double.parseDouble(wholePart);
-                                // }    // The current error will be fixed from here
+                                else if (displayStr.charAt(displayStr.length() - 1) == '-') {
+                                    curNum = 0;
+                                }
                                 else {
                                     curNum = Double.parseDouble(displayStr);
                                 }
