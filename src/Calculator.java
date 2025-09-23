@@ -70,7 +70,8 @@ class Calculator extends JFrame {
                             if (!displayStr.equals("")) {
                                 switch (displayStr.charAt(displayStr.length() - 1)) {
                                     case '.':
-                                        
+                                        fractionPart = "";
+                                        isFraction = false;
                                         break;
                                 
                                     default:
@@ -80,17 +81,29 @@ class Calculator extends JFrame {
                                         else {
                                             wholePart = wholePart.substring(0, wholePart.length() - 1);
                                         }
-    
-                                        displayStr = wholePart + fractionPart;
-                                        // curNum = Double.parseDouble(displayStr);
                                         break;
                                 }
-                            }
 
-                            curDisplay.setText(displayStr);
-                            System.out.println(wholePart);
-                            System.out.println(fractionPart);
-                            System.out.println("num = " + curNum);
+                                displayStr = wholePart + fractionPart;
+    
+                                if (displayStr.length() == 0) {
+                                    curNum = 0;
+                                }
+                                else if (displayStr.charAt(displayStr.length() - 1) == '.') {
+                                    curNum = Double.parseDouble(wholePart);
+                                }
+                                // else if (displayStr.charAt(displayStr.length() - 1) == '.') {
+                                //     curNum = Double.parseDouble(wholePart);
+                                // }    // The current error will be fixed from here
+                                else {
+                                    curNum = Double.parseDouble(displayStr);
+                                }
+                                
+                                curDisplay.setText(displayStr);
+                                System.out.println(wholePart);
+                                System.out.println(fractionPart);
+                                System.out.println("num = " + curNum);
+                            }
                             break;
 
                         case "%":
@@ -114,7 +127,7 @@ class Calculator extends JFrame {
                             break;
 
                         case ".":
-                            if (!isFraction) {
+                            if (!isFraction && ((displayStr.indexOf('-') != -1 && displayStr.length() < 11) || (displayStr.indexOf('-') == -1 && displayStr.length() < 10))) {
                                 isFraction = true;
                                 if (displayStr.length() < maxLength) {
                                     if (wholePart.equals("")) {
