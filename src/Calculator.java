@@ -11,6 +11,7 @@ class Calculator extends JFrame {
     String wholePart = "";
     String fractionPart = "";
     String displayStr = "";
+    String prevDisplayStr = "";
     Boolean isFraction = false;
 
     public Calculator() {
@@ -89,24 +90,43 @@ class Calculator extends JFrame {
                                 if (displayStr.length() == 0) {
                                     curNum = 0;
                                 }
-                                else if (displayStr.charAt(displayStr.length() - 1) == '.') {
-                                    curNum = Double.parseDouble(wholePart);
-                                }
                                 else if (displayStr.charAt(displayStr.length() - 1) == '-') {
                                     curNum = 0;
+                                }
+                                else if (displayStr.charAt(displayStr.length() - 1) == '.') {
+                                    curNum = Double.parseDouble(wholePart);
                                 }
                                 else {
                                     curNum = Double.parseDouble(displayStr);
                                 }
                                 
                                 curDisplay.setText(displayStr);
-                                System.out.println(wholePart);
-                                System.out.println(fractionPart);
-                                System.out.println("num = " + curNum);
                             }
                             break;
 
                         case "%":
+                            // The next line will check for the displayStr, if that is a valid nu mber or not
+                            isValidNum(displayStr);
+                            prevNum = curNum;
+                            curNum /= 100;
+                            prevDisplayStr = displayStr;
+                            displayStr = Double.toString(curNum);
+                            wholePart = String.format("%.0f", curNum);
+
+                            if (displayStr.indexOf('.') != -1) {
+                                if (displayStr.length() > maxLength) {
+                                    fractionPart = displayStr.substring(displayStr.indexOf('.'), maxLength);
+                                }
+                                else {
+                                    fractionPart = displayStr.substring(displayStr.indexOf('.'), displayStr.length());
+                                }
+                            }
+                            else {
+                                fractionPart = "";
+                            }
+
+                            prevDisplay.setText(prevDisplayStr);
+                            curDisplay.setText(displayStr);
                             break;
 
                         case "+/-":
@@ -120,9 +140,6 @@ class Calculator extends JFrame {
                                 displayStr = wholePart + fractionPart;
                                 curNum = Double.parseDouble(displayStr);
                                 curDisplay.setText(displayStr);
-                                System.out.println(wholePart);
-                                System.out.println(fractionPart);
-                                System.out.println("num = " + curNum);
                             }
                             break;
 
@@ -138,9 +155,6 @@ class Calculator extends JFrame {
                                     displayStr = wholePart + fractionPart;
                                 }
                                 curDisplay.setText(displayStr);
-                                System.out.println(wholePart);
-                                System.out.println(fractionPart);
-                                System.out.println("num = " + curNum);
                             }
                             break;
 
@@ -178,12 +192,13 @@ class Calculator extends JFrame {
                                 }
                                 
                                 curDisplay.setText(displayStr);
-                                System.out.println(wholePart);
-                                System.out.println(fractionPart);
-                                System.out.println("num = " + curNum);
                             }
-                            break;
+                        break;
                     }
+                    
+                    System.out.println(wholePart);
+                    System.out.println(fractionPart);
+                    System.out.println("num = " + curNum);
 
                     if (displayStr.indexOf('-') != -1) {
                         if (displayStr.indexOf('.') != -1) {
@@ -214,6 +229,10 @@ class Calculator extends JFrame {
         this.revalidate();
         this.repaint();
         this.setVisible(true);
+    }
+
+    boolean isValidNum(String numStr) {
+        //
     }
 
     public static void main(String args[]) {
