@@ -105,7 +105,7 @@ class Calculator extends JFrame {
                             break;
 
                         case "%":
-                            // The next line will check for the displayStr, if that is a valid nu mber or not
+                            // The next line will check for the displayStr, if that is a valid number or not
                             isValidNum(displayStr);
                             prevNum = curNum;
                             curNum /= 100;
@@ -130,7 +130,7 @@ class Calculator extends JFrame {
                             break;
 
                         case "+/-":
-                            if (!displayStr.equals("")) {
+                            if (!displayStr.equals("") && !wholePart.equals("-")) {
                                 if (wholePart.equals("0") && !fractionPart.equals(".") && Double.parseDouble(fractionPart) > 0) {
                                     wholePart = "-" + wholePart;
                                 }
@@ -232,7 +232,7 @@ class Calculator extends JFrame {
     }
 
     boolean isValidNum(String numStr) {
-        //
+        return true;
     }
 
     public static void main(String args[]) {
