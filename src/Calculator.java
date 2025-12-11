@@ -6,8 +6,8 @@ class Calculator extends JFrame {
     int buttonX = 0;
     int buttonY = 90;
     int maxLength = 10;
-    String displayStr = "1287.4";
-    String prevDisplayStr = "3247.88+";
+    String displayStr = "0";
+    String prevDisplayStr = "";
 
     public Calculator() {
         this.setTitle("Basic Calulator");
@@ -50,16 +50,22 @@ class Calculator extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Calculator.this.requestFocus();
+                    Boolean fractionInput = false;
+
                     String command = e.getActionCommand();
                     switch (command) {
                         case "C":
-                            displayStr = "";
+                            displayStr = "0";
                             prevDisplayStr = "";
                             break;
 
                         case "←":
                             if (displayStr.length() > 0) {
                                 displayStr = displayStr.substring(0, displayStr.length() - 1);
+
+                                if (displayStr.equals("") || displayStr.equals("-")) {
+                                    displayStr = "0";
+                                }
                             }
                             break;
 
@@ -77,6 +83,11 @@ class Calculator extends JFrame {
                             break;
 
                         case ".":
+                            int temp = displayStr.contains("-") ? 11 : 10;
+                            if (displayStr.length() < temp && !displayStr.contains(".")) {
+                                displayStr = displayStr.concat(".");
+                                fractionInput = true;
+                            }
                             break;
 
                         case "÷":
@@ -117,10 +128,10 @@ class Calculator extends JFrame {
                     }
 
                     if (displayStr.length() > 0) {
-                        if (displayStr.equals("0.")) {
+                        if (displayStr.equals("0.") || displayStr.equals("-0")) {
                             displayStr = "0";
                         }
-                        else if (displayStr.charAt(displayStr.length() - 1) == '.') {
+                        else if (displayStr.charAt(displayStr.length() - 1) == '.' && !fractionInput) {
                             displayStr = displayStr.substring(0, displayStr.length() - 1);
                         }
                     }
