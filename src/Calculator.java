@@ -70,6 +70,10 @@ class Calculator extends JFrame {
                             break;
 
                         case "+/-":
+                            if (displayStr.length() > 0 && !displayStr.equals("0")) {
+                                String temp = displayStr.contains("-") ? "%.10f" : "%.11f";
+                                displayStr = String.format(temp, 0 - Double.parseDouble(displayStr)).replaceAll("0+$", "");
+                            }
                             break;
 
                         case ".":
@@ -91,6 +95,16 @@ class Calculator extends JFrame {
                             break;
                     
                         default:
+                            if (displayStr.contains("-") || displayStr.contains(".")) {
+                                maxLength = 11;
+                                if (displayStr.contains("-") && displayStr.contains(".")) {
+                                    maxLength = 12;
+                                }
+                            }
+                            else {
+                                maxLength = 10;
+                            }
+
                             if (displayStr.length() < maxLength) {
                                 if (displayStr.equals("0")){
                                     displayStr = command;
@@ -102,8 +116,13 @@ class Calculator extends JFrame {
                             break;
                     }
 
-                    if (displayStr.equals("0.")) {
-                        displayStr = "0";
+                    if (displayStr.length() > 0) {
+                        if (displayStr.equals("0.")) {
+                            displayStr = "0";
+                        }
+                        else if (displayStr.charAt(displayStr.length() - 1) == '.') {
+                            displayStr = displayStr.substring(0, displayStr.length() - 1);
+                        }
                     }
 
                     curDisplay.setText(displayStr);
