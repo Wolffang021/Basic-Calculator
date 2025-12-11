@@ -58,9 +58,15 @@ class Calculator extends JFrame {
                             break;
 
                         case "←":
+                            if (displayStr.length() > 0) {
+                                displayStr = displayStr.substring(0, displayStr.length() - 1);
+                            }
                             break;
 
                         case "%":
+                            if (displayStr.length() > 0) {
+                                displayStr = String.format("%.10f", Double.parseDouble(displayStr) / 100).replaceAll("0+$", "");
+                            }
                             break;
 
                         case "+/-":
@@ -85,8 +91,19 @@ class Calculator extends JFrame {
                             break;
                     
                         default:
-                            displayStr = displayStr + command;
+                            if (displayStr.length() < maxLength) {
+                                if (displayStr.equals("0")){
+                                    displayStr = command;
+                                }
+                                else {
+                                    displayStr += command;
+                                }
+                            }
                             break;
+                    }
+
+                    if (displayStr.equals("0.")) {
+                        displayStr = "0";
                     }
 
                     curDisplay.setText(displayStr);
@@ -106,10 +123,6 @@ class Calculator extends JFrame {
         this.revalidate();
         this.repaint();
         this.setVisible(true);
-    }
-
-    boolean isValidNum(String numStr) {
-        return true;
     }
 
     public static void main(String args[]) {
