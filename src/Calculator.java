@@ -6,38 +6,30 @@ class Calculator extends JFrame {
     int buttonX = 0;
     int buttonY = 90;
     int maxLength = 10;
-    double curNum = 0;
-    double prevNum = 0;
-    String wholePart = "";
-    String fractionPart = "";
     String displayStr = "";
     String prevDisplayStr = "";
-    Boolean isFraction = false;
 
     public Calculator() {
         this.setTitle("Basic Calulator");
         this.setSize(400, 610);
         this.setResizable(false);
-        this.getContentPane().setBackground(new Color(120, 128, 122));
+        this.getContentPane().setBackground(Color.BLACK);
         ImageIcon tempIcon = new ImageIcon("img/appIcon.png");
         Image icon = tempIcon.getImage();
         this.setIconImage(icon);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setFocusable(true);
         this.setLayout(null);
 
         JLabel prevDisplay = new JLabel();
         prevDisplay.setBounds(0, 0, 385, 30);
-        Font tempPrevDisplayFont = prevDisplay.getFont();
-        Font prevDisplayFont = tempPrevDisplayFont.deriveFont(18f);
-        prevDisplay.setFont(prevDisplayFont);
+        prevDisplay.setFont(new Font("dialog", Font.PLAIN, 18));
         prevDisplay.setHorizontalAlignment(JLabel.RIGHT);
         this.add(prevDisplay);
         
         JLabel curDisplay = new JLabel();
         curDisplay.setBounds(0, 30, 385, 60);
-        Font tempCurDisplayFont = curDisplay.getFont();
-        Font curDisplayFont = tempCurDisplayFont.deriveFont(50f);
-        curDisplay.setFont(curDisplayFont);
+        curDisplay.setFont(new Font("dialog", Font.PLAIN, 18));
         curDisplay.setHorizontalAlignment(JLabel.RIGHT);
         this.add(curDisplay);
         
@@ -46,116 +38,30 @@ class Calculator extends JFrame {
         for (int i = 0; i < 20; i++) {
             button[i] = new JButton(symbols[i]);
             button[i].setBounds(buttonX, buttonY, 96, 96);
-            button[i].setBackground(new Color(188, 196, 190));
+            button[i].setBackground(new Color(5, 55, 140));
             button[i].setForeground(Color.BLACK);
-            Font tempFont = button[i].getFont();
-            Font buttonFont = tempFont.deriveFont(25f);
-            button[i].setFont(buttonFont);
+            button[i].setFont(new Font("dialog", Font.BOLD, 32));
             this.add(button[i]);
 
             button[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    Calculator.this.requestFocus();
                     String command = e.getActionCommand();
                     switch (command) {
                         case "C":
-                            isFraction = false;
-                            wholePart = "";
-                            fractionPart = "";
-                            curNum = 0;
-                            displayStr = "";
-                            curDisplay.setText(displayStr);
                             break;
 
                         case "←":
-                            if (!displayStr.equals("")) {
-                                switch (displayStr.charAt(displayStr.length() - 1)) {
-                                    case '.':
-                                        fractionPart = "";
-                                        isFraction = false;
-                                        break;
-                                
-                                    default:
-                                        if (isFraction) {
-                                            fractionPart = fractionPart.substring(0, fractionPart.length() - 1);
-                                        }
-                                        else {
-                                            wholePart = wholePart.substring(0, wholePart.length() - 1);
-                                        }
-                                        break;
-                                }
-
-                                displayStr = wholePart + fractionPart;
-    
-                                if (displayStr.length() == 0) {
-                                    curNum = 0;
-                                }
-                                else if (displayStr.charAt(displayStr.length() - 1) == '-') {
-                                    curNum = 0;
-                                }
-                                else if (displayStr.charAt(displayStr.length() - 1) == '.') {
-                                    curNum = Double.parseDouble(wholePart);
-                                }
-                                else {
-                                    curNum = Double.parseDouble(displayStr);
-                                }
-                                
-                                curDisplay.setText(displayStr);
-                            }
                             break;
 
                         case "%":
-                            // The next line will check for the displayStr, if that is a valid number or not
-                            isValidNum(displayStr);
-                            prevNum = curNum;
-                            curNum /= 100;
-                            prevDisplayStr = displayStr;
-                            displayStr = Double.toString(curNum);
-                            wholePart = String.format("%.0f", curNum);
-
-                            if (displayStr.indexOf('.') != -1) {
-                                if (displayStr.length() > maxLength) {
-                                    fractionPart = displayStr.substring(displayStr.indexOf('.'), maxLength);
-                                }
-                                else {
-                                    fractionPart = displayStr.substring(displayStr.indexOf('.'), displayStr.length());
-                                }
-                            }
-                            else {
-                                fractionPart = "";
-                            }
-
-                            prevDisplay.setText(prevDisplayStr);
-                            curDisplay.setText(displayStr);
                             break;
 
                         case "+/-":
-                            if (!displayStr.equals("") && !wholePart.equals("-")) {
-                                if (wholePart.equals("0") && !fractionPart.equals(".") && Double.parseDouble(fractionPart) > 0) {
-                                    wholePart = "-" + wholePart;
-                                }
-                                else {
-                                    wholePart = String.format("%.0f", 0 - Double.parseDouble(wholePart));
-                                }
-                                displayStr = wholePart + fractionPart;
-                                curNum = Double.parseDouble(displayStr);
-                                curDisplay.setText(displayStr);
-                            }
                             break;
 
                         case ".":
-                            if (!isFraction && ((displayStr.indexOf('-') != -1 && displayStr.length() < 11) || (displayStr.indexOf('-') == -1 && displayStr.length() < 10))) {
-                                isFraction = true;
-                                if (displayStr.length() < maxLength) {
-                                    if (wholePart.equals("")) {
-                                        curNum = 0;
-                                        wholePart = "0";
-                                    }
-                                    fractionPart = ".";
-                                    displayStr = wholePart + fractionPart;
-                                }
-                                curDisplay.setText(displayStr);
-                            }
                             break;
 
                         case "÷":
@@ -174,45 +80,7 @@ class Calculator extends JFrame {
                             break;
                     
                         default:
-                            if (displayStr.length() < maxLength) {
-                                if (isFraction) {
-                                    fractionPart += command;
-                                    displayStr = wholePart + fractionPart;
-                                    curNum = Double.parseDouble(displayStr);
-                                }
-                                else {
-                                    if (!(curNum == 0 && command.equals("0"))) {
-                                        wholePart += command;
-                                        displayStr = wholePart + fractionPart;
-                                        curNum = Double.parseDouble(displayStr);
-                                    }
-                                    else {
-                                        wholePart = "";
-                                    }
-                                }
-                                
-                                curDisplay.setText(displayStr);
-                            }
-                        break;
-                    }
-                    
-                    System.out.println(wholePart);
-                    System.out.println(fractionPart);
-                    System.out.println("num = " + curNum);
-
-                    if (displayStr.indexOf('-') != -1) {
-                        if (displayStr.indexOf('.') != -1) {
-                            maxLength = 12;
-                        }
-                        else {
-                            maxLength = 11;
-                        }
-                    }
-                    else if (displayStr.indexOf('.') != -1) {
-                        maxLength = 11;
-                    }
-                    else {
-                        maxLength = 10;
+                            break;
                     }
                 }
             });
