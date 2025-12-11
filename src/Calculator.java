@@ -6,30 +6,33 @@ class Calculator extends JFrame {
     int buttonX = 0;
     int buttonY = 90;
     int maxLength = 10;
-    String displayStr = "";
-    String prevDisplayStr = "";
+    String displayStr = "1287.4";
+    String prevDisplayStr = "3247.88+";
 
     public Calculator() {
         this.setTitle("Basic Calulator");
-        this.setSize(400, 610);
+        this.setSize(302, 488);
         this.setResizable(false);
         this.getContentPane().setBackground(Color.BLACK);
         ImageIcon tempIcon = new ImageIcon("img/appIcon.png");
         Image icon = tempIcon.getImage();
         this.setIconImage(icon);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
         this.setFocusable(true);
         this.setLayout(null);
 
-        JLabel prevDisplay = new JLabel();
-        prevDisplay.setBounds(0, 0, 385, 30);
-        prevDisplay.setFont(new Font("dialog", Font.PLAIN, 18));
+        JLabel prevDisplay = new JLabel(prevDisplayStr);
+        prevDisplay.setBounds(0, 6, 284, 30);
+        prevDisplay.setFont(new Font("dialog", Font.BOLD, 18));
+        prevDisplay.setForeground(new Color(3, 30, 80));
         prevDisplay.setHorizontalAlignment(JLabel.RIGHT);
         this.add(prevDisplay);
         
-        JLabel curDisplay = new JLabel();
-        curDisplay.setBounds(0, 30, 385, 60);
-        curDisplay.setFont(new Font("dialog", Font.PLAIN, 18));
+        JLabel curDisplay = new JLabel(displayStr);
+        curDisplay.setBounds(0, 34, 284, 60);
+        curDisplay.setFont(new Font("dialog", Font.BOLD, 40));
+        curDisplay.setForeground(new Color(5, 55, 140));
         curDisplay.setHorizontalAlignment(JLabel.RIGHT);
         this.add(curDisplay);
         
@@ -37,7 +40,7 @@ class Calculator extends JFrame {
         JButton[] button = new JButton[20];
         for (int i = 0; i < 20; i++) {
             button[i] = new JButton(symbols[i]);
-            button[i].setBounds(buttonX, buttonY, 96, 96);
+            button[i].setBounds(buttonX, buttonY, 72, 72);
             button[i].setBackground(new Color(5, 55, 140));
             button[i].setForeground(Color.BLACK);
             button[i].setFont(new Font("dialog", Font.BOLD, 32));
@@ -50,6 +53,8 @@ class Calculator extends JFrame {
                     String command = e.getActionCommand();
                     switch (command) {
                         case "C":
+                            displayStr = "";
+                            prevDisplayStr = "";
                             break;
 
                         case "←":
@@ -80,17 +85,21 @@ class Calculator extends JFrame {
                             break;
                     
                         default:
+                            displayStr = displayStr + command;
                             break;
                     }
+
+                    curDisplay.setText(displayStr);
+                    prevDisplay.setText(prevDisplayStr);
                 }
             });
 
             if (buttonX < 200) {
-                buttonX += 96;
+                buttonX += 72;
             }
             else {
                 buttonX = 0;
-                buttonY += 96;
+                buttonY += 72;
             }
         }
         
