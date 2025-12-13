@@ -26,14 +26,14 @@ class Calculator extends JFrame {
         JLabel prevDisplay = new JLabel(prevDisplayStr);
         prevDisplay.setBounds(0, 6, 284, 30);
         prevDisplay.setFont(new Font("dialog", Font.BOLD, 18));
-        prevDisplay.setForeground(new Color(3, 30, 80));
+        prevDisplay.setForeground(new Color(41, 56, 82));
         prevDisplay.setHorizontalAlignment(JLabel.RIGHT);
         this.add(prevDisplay);
         
         JLabel curDisplay = new JLabel(displayStr);
         curDisplay.setBounds(0, 34, 284, 60);
         curDisplay.setFont(new Font("dialog", Font.BOLD, 40));
-        curDisplay.setForeground(new Color(5, 55, 140));
+        curDisplay.setForeground(new Color(60, 83, 120));
         curDisplay.setHorizontalAlignment(JLabel.RIGHT);
         this.add(curDisplay);
         
@@ -42,8 +42,8 @@ class Calculator extends JFrame {
         for (int i = 0; i < 20; i++) {
             button[i] = new JButton(symbols[i]);
             button[i].setBounds(buttonX, buttonY, 72, 72);
-            button[i].setBackground(new Color(5, 55, 140));
-            button[i].setForeground(Color.BLACK);
+            button[i].setBackground(new Color(60, 83, 120));
+            button[i].setForeground(new Color(21, 26, 31));
             button[i].setFont(new Font("dialog", Font.BOLD, 32));
             this.add(button[i]);
 
@@ -61,6 +61,10 @@ class Calculator extends JFrame {
                             break;
 
                         case "←":
+                            if (displayStr.equals("NaN") || displayStr.equals("Infinity") || displayStr.equals("Error")) {
+                                displayStr = "0";
+                            }
+
                             if (displayStr.length() > 0) {
                                 displayStr = displayStr.substring(0, displayStr.length() - 1);
 
@@ -83,7 +87,12 @@ class Calculator extends JFrame {
                             break;
 
                         case ".":
+                            if (displayStr.equals("NaN") || displayStr.equals("Infinity") || displayStr.equals("Error")) {
+                                displayStr = "0";
+                            }
+
                             int temp = displayStr.contains("-") ? 11 : 10;
+
                             if (displayStr.length() < temp && !displayStr.contains(".")) {
                                 displayStr = displayStr.concat(".");
                                 fractionInput = true;
@@ -154,6 +163,10 @@ class Calculator extends JFrame {
                                 maxLength = 10;
                             }
 
+                            if (displayStr.equals("NaN") || displayStr.equals("Infinity") || displayStr.equals("Error")) {
+                                displayStr = "0";
+                            }
+
                             if (displayStr.length() < maxLength) {
                                 if (displayStr.equals("0")){
                                     displayStr = command;
@@ -188,7 +201,14 @@ class Calculator extends JFrame {
                 buttonY += 72;
             }
         }
-        
+
+        JLabel creditDisplay = new JLabel("made by Shourjo");
+        creditDisplay.setBounds(2, 55, 284, 60);
+        creditDisplay.setFont(new Font("dialog", Font.BOLD, 6));
+        creditDisplay.setForeground(new Color(30, 31, 33));
+        creditDisplay.setHorizontalAlignment(JLabel.LEFT);
+        this.add(creditDisplay);
+
         this.revalidate();
         this.repaint();
         this.setVisible(true);
