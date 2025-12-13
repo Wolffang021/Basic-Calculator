@@ -102,6 +102,14 @@ class Calculator extends JFrame {
                             break;
 
                         case "x":
+                            if (prevOperaton == ' ') {
+                                prevDisplayStr = displayStr + " x";
+                            }
+                            else {
+                                prevDisplayStr = Operate(prevDisplayStr.substring(0, prevDisplayStr.length() - 2), displayStr, prevOperaton).concat(" x");
+                            }
+                            prevOperaton = 'x';
+                            displayStr = "0";
                             break;
 
                         case "-":
@@ -178,6 +186,7 @@ class Calculator extends JFrame {
                 break;
 
             case 'x':
+                answer = String.format("%.10f", Double.parseDouble(num1) * Double.parseDouble(num2)).replaceAll("0+$", "");
                 break;
 
             case '-':
