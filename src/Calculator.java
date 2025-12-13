@@ -111,7 +111,12 @@ class Calculator extends JFrame {
                             break;
 
                         case "=":
-                            prevOperaton = ' ';
+                            if (!prevDisplayStr.equals("") && prevOperaton != ' ') {
+                                String tempStr = displayStr;
+                                displayStr = Operate(prevDisplayStr.substring(0, prevDisplayStr.length() - 2), displayStr, prevOperaton);
+                                prevDisplayStr = tempStr;
+                                prevOperaton = ' ';
+                            }
                             break;
                     
                         default:
