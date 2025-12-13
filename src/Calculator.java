@@ -113,9 +113,25 @@ class Calculator extends JFrame {
                             break;
 
                         case "-":
+                            if (prevOperaton == ' ') {
+                                prevDisplayStr = displayStr + " -";
+                            }
+                            else {
+                                prevDisplayStr = Operate(prevDisplayStr.substring(0, prevDisplayStr.length() - 2), displayStr, prevOperaton).concat(" -");
+                            }
+                            prevOperaton = '-';
+                            displayStr = "0";
                             break;
 
                         case "+":
+                            if (prevOperaton == ' ') {
+                                prevDisplayStr = displayStr + " +";
+                            }
+                            else {
+                                prevDisplayStr = Operate(prevDisplayStr.substring(0, prevDisplayStr.length() - 2), displayStr, prevOperaton).concat(" +");
+                            }
+                            prevOperaton = '+';
+                            displayStr = "0";
                             break;
 
                         case "=":
@@ -190,9 +206,11 @@ class Calculator extends JFrame {
                 break;
 
             case '-':
+                answer = String.format("%.10f", Double.parseDouble(num1) - Double.parseDouble(num2)).replaceAll("0+$", "");
                 break;
 
             case '+':
+                answer = String.format("%.10f", Double.parseDouble(num1) + Double.parseDouble(num2)).replaceAll("0+$", "");
                 break;
         }
 
