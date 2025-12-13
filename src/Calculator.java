@@ -6,6 +6,7 @@ class Calculator extends JFrame {
     int buttonX = 0;
     int buttonY = 90;
     int maxLength = 10;
+    char prevOperaton = ' ';
     String displayStr = "0";
     String prevDisplayStr = "";
 
@@ -77,8 +78,7 @@ class Calculator extends JFrame {
 
                         case "+/-":
                             if (displayStr.length() > 0 && !displayStr.equals("0")) {
-                                String temp = displayStr.contains("-") ? "%.10f" : "%.11f";
-                                displayStr = String.format(temp, 0 - Double.parseDouble(displayStr)).replaceAll("0+$", "");
+                                displayStr = String.format("%.10f", 0 - Double.parseDouble(displayStr)).replaceAll("0+$", "");
                             }
                             break;
 
@@ -91,6 +91,14 @@ class Calculator extends JFrame {
                             break;
 
                         case "÷":
+                            if (prevOperaton == ' ') {
+                                prevDisplayStr = displayStr + " ÷";
+                            }
+                            else {
+                                prevDisplayStr = Operate(prevDisplayStr.substring(0, prevDisplayStr.length() - 2), displayStr, prevOperaton).concat(" ÷");
+                            }
+                            prevOperaton = '÷';
+                            displayStr = "0";
                             break;
 
                         case "x":
@@ -103,6 +111,7 @@ class Calculator extends JFrame {
                             break;
 
                         case "=":
+                            prevOperaton = ' ';
                             break;
                     
                         default:
@@ -128,11 +137,12 @@ class Calculator extends JFrame {
                     }
 
                     if (displayStr.length() > 0) {
-                        if (displayStr.equals("0.") || displayStr.equals("-0")) {
-                            displayStr = "0";
-                        }
-                        else if (displayStr.charAt(displayStr.length() - 1) == '.' && !fractionInput) {
+                        if (displayStr.charAt(displayStr.length() - 1) == '.' && !fractionInput) {
                             displayStr = displayStr.substring(0, displayStr.length() - 1);
+                        }
+
+                        if (displayStr.equals("-0")) {
+                            displayStr = "0";
                         }
                     }
 
@@ -153,6 +163,30 @@ class Calculator extends JFrame {
         this.revalidate();
         this.repaint();
         this.setVisible(true);
+    }
+
+    String Operate(String num1, String num2, char operation) {
+        String answer = "Error";
+        switch (operation) {
+            case '÷':
+                answer = String.format("%.10f", Double.parseDouble(num1) / Double.parseDouble(num2)).replaceAll("0+$", "");
+                break;
+
+            case 'x':
+                break;
+
+            case '-':
+                break;
+
+            case '+':
+                break;
+        }
+
+        if (answer.charAt(answer.length() - 1) == '.') {
+            answer = answer.substring(0, answer.length() - 1);
+        }
+
+        return answer;
     }
 
     public static void main(String args[]) {
