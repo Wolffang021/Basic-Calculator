@@ -58,6 +58,7 @@ class Calculator extends JFrame {
                         case "C":
                             displayStr = "0";
                             prevDisplayStr = "";
+                            prevOperaton = ' ';
                             break;
 
                         case "←":
