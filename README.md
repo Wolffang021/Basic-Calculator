@@ -2,7 +2,7 @@
 
 A simple calculator app written in **Java** using **Swing**.
 
-This project shows a basic desktop calculator that can do **addition, subtraction, multiplication, and division**. It’s great for learning Java GUI programming and understanding how event handling works in Swing.:contentReference[oaicite:0]{index=0}
+This project shows a basic desktop calculator that can do **addition, subtraction, multiplication, and division**. It’s great for learning Java GUI programming and understanding how event handling works in Swing.
 
 ## 🧮 Features
 
